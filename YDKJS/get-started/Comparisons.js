@@ -9,24 +9,28 @@ const dayStart = "07:30";
 const dayEnd = "17:45";
 
 function scheduleMeeting(startTime, durationMinutes) {
-  const meetingEndTime = totalTime(startTime, durationMinutes);
-  
+  const endTime = meetingEndTime(startTime, durationMinutes);
+
+  //The goal here to do an equality check on the strings "1253" and "1339".
+  //JS will check the 4 integers for size but it must be normalized (with leading 0s where ever needed)
+  // otherwise the result will NOT be properly checked.
   if (normTime(dayStart) > normTime(startTime)) return false;
-  if (normTime(meetingEndTime) > normTime(dayEnd)) return false;
+  if (normTime(endTime) > normTime(dayEnd)) return false;
 
   return true;
 };
 
-function totalTime(start, duration) {
-  const timeArray = start.split(":")
+function meetingEndTime(start, duration) {
+  const timeArray = start.split(":");
   const hours = (Math.floor(duration / 60) + +timeArray[0]);
   const mins = (duration % 60) + +timeArray[1];
   return `${hours}:${mins}`
 };
 
 function normTime(time) {
-  if (time[0] == 0) return time.replace(":", "");
+  if (time.length < 4) return normTime(0 + time);
   if (time.length === 5) return time.replace(":", "");
+  if (time[0] == 0) return time.replace(":", "");
   return 0 + time.replace(":", "");
 };
 
