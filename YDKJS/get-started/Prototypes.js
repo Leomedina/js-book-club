@@ -16,7 +16,7 @@
 function randMax(max) {
   return Math.trunc(1E9 * Math.random()) % max;
 }
- 
+
 var reel = {
   symbols: [
     "♠", "♥", "♦", "♣", "☺", "★", "☾", "☀"
@@ -43,8 +43,9 @@ var reel = {
 
 var slotMachine = {
   reels: [
-    // this slot machine needs 3 separate reels
-    // hint: Object.create(..)
+    Object.create(reel),
+    Object.create(reel),
+    Object.create(reel)
   ],
   spin() {
     this.reels.forEach(function spinReel(reel) {
@@ -52,18 +53,34 @@ var slotMachine = {
     });
   },
   display() {
-    // TODO
-  }
+    let grid = [];
+
+    for (let linePos = -1; linePos <= 1; linePos++) {
+      let line = this.reels.map(function getline(reel) {
+        let slot = Object.create(reel);
+        slot.position = (
+          reel.symbols.length +
+          reel.position +
+          linePos
+        ) % reel.symbols.length;
+        return slot.display();
+      });
+      grid.push(line.join(" | "));
+    }
+    return grid.join("\n");
+  },
 };
 
+console.log("---")
 slotMachine.spin();
-slotMachine.display();
+console.log(slotMachine.display());
 // ☾ | ☀ | ★
 // ☀ | ♠ | ☾
 // ♠ | ♥ | ☀
-
+console.log("---")
 slotMachine.spin();
-slotMachine.display();
+console.log(slotMachine.display());
 // ♦ | ♠ | ♣
 // ♣ | ♥ | ☺
 // ☺ | ♦ | ★
+console.log("---")
