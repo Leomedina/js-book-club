@@ -1,5 +1,9 @@
+# SCOPE AND CLOSURES
+
+---
 # Chapter 1 - What is even scope.
 ---
+
 ## Interesting Thoughts
 * JS goes through two phases before it's ready compile then execute. Compilation phases parses the code and gives you any compilation errors such as syntax or reference errors.
 
@@ -50,3 +54,9 @@ saySomething();
 // initialization
 ```
 Setting aside the Reference Error (hoisting related) found during compilation process. Why is that random floating object valid... strange. 
+
+---
+
+# Chapter 2 - So about Lexical Scope (Tokenization)
+
+---
