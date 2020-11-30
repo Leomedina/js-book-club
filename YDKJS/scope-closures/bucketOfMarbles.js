@@ -44,26 +44,34 @@ var parts = [
 ];
 
 //Global Lexical Scope (RED)
+// NOTES: the (BLUE) SCOPE created within getValidDoll closes over (GREEN) giving it access to validDolls
+// VARIABLE NOTES: the parts variable is shadowed and does not override the global parts
 function getValidDoll(dollSchema, parts) {
   let validDolls = [];
   dollSchema = dollSchema.split(',');
   parts = parseParts(parts);
 
+  // (GREEN) scope is created and closes over the following (GREEN) scoping giving it access to isValid
   for (let doll in parts) {
     let isValid = true;
 
-    dollSchema.forEach(dollPart => {
-      if (!parts[doll].includes(dollPart)) isValid = false;
+    // This callback created a (ORANGE) scope that access the isValid.... 
+    dollSchema.forEach(part => {
+      if (!parts[doll].includes(part)) isValid = false;
     });
 
-    if (isValid) validDolls.push(doll)
+    if (isValid) validDolls.push(doll);
   };
 
   return validDolls;
 };
 
+// Lexical Global Scope 
+// NOTE: when called within getValidDoll, you create a (BLUE) scope of the function
+// VARIABLE NOTES: the parts param is a shadow of an inferred shadow variable
 function parseParts(parts) {
   let partsObject = {};
+  // (GREEN or BLUE) scope created in the following for of loop.
   for (let part of parts) {
     [name, part] = part.split("_");
     partsObject[name] = partsObject[name] || [];
